@@ -1,0 +1,31 @@
+services:
+  app1:
+    container_name: app1
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    environment:
+      CONTAINER_NAME: app1
+    volumes:
+      - ./app:/var/www/html
+
+  app2:
+    container_name: app2
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    environment:
+      CONTAINER_NAME: app2
+    volumes:
+      - ./app:/var/www/html
+
+  proxy:
+    container_name: proxy
+    image: nginx:alpine
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./proxy/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - app1
+      - app2
